@@ -9,5 +9,9 @@ services:
       - 3000:80
     volumes:
       - ./:/var/www/html
+    environment:
+      MONGODB_DB: ${MONGODB_DB}
+      MONGODB_URI: ${MONGODB_URI}
+
 volumes:
   html: {}
