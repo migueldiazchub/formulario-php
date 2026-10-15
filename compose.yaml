@@ -9,9 +9,20 @@ services:
       - 3000:80
     volumes:
       - ./:/var/www/html
-    environment:
-      MONGODB_DB: ${MONGODB_DB}
-      MONGODB_URI: ${MONGODB_URI}
+    env_file: .env
+
+  mongodb:
+    image: mongodb/mongodb-atlas-local
+    hostname: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+      - configdb:/data/configdb
+      - mongot:/data/mongot
 
 volumes:
   html: {}
+  db:
+  configdb:
+  mongot:
