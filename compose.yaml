@@ -1,17 +1,25 @@
 services:
-  php:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: formulario
-    restart: always
+  web:
+    image: nginx:latest
     ports:
-      - 3000:80
+      - "3000:80"
     volumes:
-      - ./:/var/www/html
-    environment:
-      MONGODB_DB: ${MONGODB_DB}
-      MONGODB_URI: ${MONGODB_URI}
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+      - mongo
 
-volumes:
-  html: {}
+  php:
+    image: php:8.2-cli
+    restart: always
+    volumes:
+      - ./src:/var/www/html
+
+  mongo:
+    image: mongo:7.0
+    hostname: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
